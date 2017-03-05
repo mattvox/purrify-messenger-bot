@@ -74,9 +74,11 @@ function receivedMessage(event) {
     var messageId = message.mid;
 
     var messageText = message.text;
+
     if (messageText == 'shit'){
       messageText = "Get lost you moron!!!";
     }
+
     var messageAttachments = message.attachments;
 
     if (messageText) {
@@ -86,6 +88,10 @@ function receivedMessage(event) {
         switch (messageText) {
             case 'generic':
                 sendGenericMessage(senderID);
+                break;
+
+            case: 'cat-fact':
+                sendCatFactMessage(senderID);
                 break;
 
             default:
@@ -102,6 +108,28 @@ function sendGenericMessage(recipientId, messageText) {
 
 function sendTextMessage(recipientId, messageText) {
   console.log('test', recipientId, messageText);
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            text: messageText
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+function sendCatFactMessage(recipientId, messageText) {
+  // console.log('test', recipientId, messageText);
+  // make API call
+    request
+    .get('https://purrify.herokuapp.com/api/facts')
+    .on('response', function(response) {
+      console.log(response);
+    })
+
+
     var messageData = {
         recipient: {
             id: recipientId
