@@ -74,6 +74,9 @@ function receivedMessage(event) {
     var messageId = message.mid;
 
     var messageText = message.text;
+    if (messageText == 'shit'){
+      messageText = "Get lost you moron!!!";
+    }
     var messageAttachments = message.attachments;
 
     if (messageText) {
