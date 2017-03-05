@@ -133,7 +133,7 @@ function sendCatFactMessage(recipientId, messageText) {
                 text: body[0].fact
             }
         };
-        console.log(body[0].fact);
+        console.log('BODY: ', body[0].fact);
         callSendAPI(messageData);
     })
 }
@@ -148,6 +148,7 @@ function callSendAPI(messageData) {
         json: messageData
 
     }, function (error, response, body) {
+      console.log('status code', response.statusCode);
         if (!error && response.statusCode == 200) {
             var recipientId = body.recipient_id;
             var messageId = body.message_id;
