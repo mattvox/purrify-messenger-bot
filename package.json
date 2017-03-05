@@ -1,0 +1,17 @@
+{
+  "name": "purrify-messenger-bot",
+  "version": "1.0.0",
+  "description": "A messenger bot for the Purrify API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Matthew Bliffert",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.0",
+    "express": "^4.15.0",
+    "request": "^2.80.0"
+  }
+}
