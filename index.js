@@ -125,6 +125,7 @@ function sendCatFactMessage(recipientId, messageText) {
     // make API call
     request('https://purrify.herokuapp.com/api/facts',
     function (err, response, body) {
+      var body = JSON.parse(body);
       console.log('body', body, typeof body);
         var messageData = {
             recipient: {
