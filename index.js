@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 
+const PAGE_ACCESS_TOKEN = require('./page-config');
+
 app.set('port', (process.env.PORT || 5000))
 
 // Process application/x-www-form-urlencoded
@@ -115,7 +117,7 @@ function callSendAPI(messageData) {
     request({
         uri: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
-            access_token: FB_PAGE_ACCESS_TOKEN
+            access_token: PAGE_ACCESS_TOKEN
         },
         method: 'POST',
         json: messageData
