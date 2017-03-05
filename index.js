@@ -90,7 +90,7 @@ function receivedMessage(event) {
                 sendGenericMessage(senderID);
                 break;
 
-            case: 'cat-fact':
+            case 'cat-fact':
                 sendCatFactMessage(senderID);
                 break;
 
