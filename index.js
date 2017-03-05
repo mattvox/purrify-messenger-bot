@@ -75,8 +75,8 @@ function receivedMessage(event) {
 
     var messageText = message.text;
 
-    if (messageText == 'shit'){
-      messageText = "Get lost you moron!!!";
+    if (messageText == 'shit') {
+        messageText = "Get lost you moron!!!";
     }
 
     var messageAttachments = message.attachments;
@@ -107,7 +107,7 @@ function sendGenericMessage(recipientId, messageText) {
 }
 
 function sendTextMessage(recipientId, messageText) {
-  console.log('test', recipientId, messageText);
+    console.log('test', recipientId, messageText);
     var messageData = {
         recipient: {
             id: recipientId
@@ -121,23 +121,20 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function sendCatFactMessage(recipientId, messageText) {
-  // console.log('test', recipientId, messageText);
-  // make API call
-    request('https://purrify.herokuapp.com/api/facts', function(err, response, body) {
-      console.log('response', body);
+    // console.log('test', recipientId, messageText);
+    // make API call
+    request('https://purrify.herokuapp.com/api/facts',
+    function (err, response, body) {
+        var messageData = {
+            recipient: {
+                id: recipientId
+            },
+            message: {
+                text: body[0].fact
+            }
+        };
+        callSendAPI(messageData);
     })
-
-
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            text: messageText
-        }
-    };
-
-    callSendAPI(messageData);
 }
 
 function callSendAPI(messageData) {
