@@ -98,6 +98,7 @@ function sendGenericMessage(recipientId, messageText) {
 }
 
 function sendTextMessage(recipientId, messageText) {
+  console.log('test', recipientId, messageText);
     var messageData = {
         recipient: {
             id: recipientId
