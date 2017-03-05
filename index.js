@@ -91,7 +91,7 @@ function receivedMessage(event) {
                 break;
 
             case 'cat-fact':
-                sendCatFactMessage(senderID);
+                sendCatFactMessage(senderID, messageText);
                 break;
 
             default:
@@ -123,10 +123,8 @@ function sendTextMessage(recipientId, messageText) {
 function sendCatFactMessage(recipientId, messageText) {
   // console.log('test', recipientId, messageText);
   // make API call
-    request
-    .get('https://purrify.herokuapp.com/api/facts')
-    .on('response', function(response) {
-      console.log('response', response);
+    request('https://purrify.herokuapp.com/api/facts', function(err, response, body) {
+      console.log('response', body);
     })
 
 
