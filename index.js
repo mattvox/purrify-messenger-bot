@@ -133,6 +133,7 @@ function sendCatFactMessage(recipientId, messageText) {
                 text: body[0].fact
             }
         };
+        console.log(body[0].fact);
         callSendAPI(messageData);
     })
 }
@@ -154,7 +155,7 @@ function callSendAPI(messageData) {
             console.log("Successfully sent generic message with id %s to recipient %s", messageId, recipientId);
         } else {
             console.error("Unable to send message.");
-            console.error(response);
+            // console.error(response);
             console.error(error);
         }
     });
