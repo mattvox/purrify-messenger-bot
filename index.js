@@ -5,25 +5,18 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 
-// const PAGE_ACCESS_TOKEN = require('./page-config');
-
 const PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 
 app.set('port', (process.env.PORT || 5000))
-
-// Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
-
-// Process application/json
 app.use(bodyParser.json())
 
-// Index route
 app.get('/', function (req, res) {
     res.send('Hello world, I am a chat bot')
 })
 
 app.get('/webhook', function (req, res) {
-    if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === 'mooses everywhere') {
+    if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === process.env.VERIFY_TOKEN) {
         console.log("Validating webhook");
         res.status(200).send(req.query['hub.challenge']);
     } else {
@@ -31,11 +24,6 @@ app.get('/webhook', function (req, res) {
         res.sendStatus(403);
     }
 });
-
-// Spin up the server
-app.listen(app.get('port'), function () {
-    console.log('running on port', app.get('port'))
-})
 
 app.post('/webhook', function (req, res) {
     var data = req.body;
@@ -66,6 +54,13 @@ app.post('/webhook', function (req, res) {
         res.sendStatus(200);
     }
 });
+
+// Spin up the server
+app.listen(app.get('port'), function () {
+    console.log('running on port', app.get('port'))
+})
+
+// ---------------------------------------------------------
 
 function receivedMessage(event) {
     var senderID = event.sender.id;
