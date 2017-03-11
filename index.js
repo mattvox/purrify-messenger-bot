@@ -106,11 +106,11 @@ function handleGreeting(senderID) {
                 text: greeting + 'Welcome to the Purrrify bot. Would you like a cat fact right meow?',
                 quick_replies: [
                     {
-                        content_type: 'text',
+                        content_type: 'postback',
                         title: 'Yes',
                         payload: 'cat fact'
                     }, {
-                        content_type: 'text',
+                        content_type: 'postback',
                         title: 'No',
                         payload: 'no cat fact'
                     }
@@ -156,10 +156,6 @@ function receivedMessage(event) {
     var isQuickReply = message.quick_reply.payload;
 
     if (messageText) {
-
-      if (isQuickReply) {
-          console.log('This is a quick reply!');
-      }
 
         // If we receive a text message, check to see if it matches a keyword
         // and send back the example. Otherwise, just echo the text we received.
