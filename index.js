@@ -2,16 +2,20 @@
 
 /* global process */
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const request = require('request')
-const app = express()
+const express = require('express');
+const bodyParser = require('body-parser');
+const request = require('request');
+const app = express();
 
 const PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 
-app.set('port', (process.env.PORT || 5000))
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
+app.set('port', (process.env.PORT || 5000));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+app.listen(app.get('port'), function () {
+    console.log('running on port', app.get('port'))
+})
 
 app.get('/', function (req, res) {
     res.send('Hello world, I am a chat bot')
@@ -40,7 +44,9 @@ app.post('/webhook', function (req, res) {
 
             // Iterate over each messaging event
             entry.messaging.forEach(function (event) {
-                if (event.message) {
+                if (event.postback) {
+                    receivedPostback(event);
+                } else if (event.message) {
                     receivedMessage(event);
                 } else {
                     console.log("Webhook received unknown event: ", event);
@@ -48,21 +54,58 @@ app.post('/webhook', function (req, res) {
             });
         });
 
-        // Assume all went well.
-        //
-        // You must send back a 200, within 20 seconds, to let us know
-        // you've successfully received the callback. Otherwise, the request
-        // will time out and we will keep trying to resend.
         res.sendStatus(200);
     }
 });
 
-// Spin up the server
-app.listen(app.get('port'), function () {
-    console.log('running on port', app.get('port'))
-})
-
 // ---------------------------------------------------------
+
+function receivedPostback(event) {
+    var senderID = event.sender.id;
+    var payload = event.postback.payload;
+
+    if (payload === 'Greeting') {
+        request({
+            uri: `https://graph.facebook.com/v2.6/${senderID}`,
+            qs: {
+                access_token: process.env.PAGE_ACCESS_TOKEN,
+                fields: 'first_name'
+            },
+            method: 'GET'
+        }, function (err, response, body) {
+            var greeting = '';
+
+            if (err) {
+                console.log('error finding user name: ', err);
+            } else {
+                var bodyObj = JSON.parse(body);
+                greeting = 'Oh herro' + bodyObj.first_name + '! ';
+            }
+
+            var messageData = {
+                recipient: {
+                    id: senderID
+                },
+                message: {
+                    text: greeting + 'Welcome to the Purrrify bot. Would you like a cat fact right meow?',
+                    quick_replies: [
+                        {
+                            content_type: 'text',
+                            title: 'Yes',
+                            payload: 'cat fact'
+                        }, {
+                            content_type: 'text',
+                            title: 'No',
+                            payload: 'no cat fact'
+                        }
+                    ]
+                }
+            }
+            
+            callSendAPI(messageData);
+        })
+    }
+}
 
 function receivedMessage(event) {
     var senderID = event.sender.id;
@@ -74,13 +117,7 @@ function receivedMessage(event) {
     console.log(JSON.stringify(message));
 
     var messageId = message.mid;
-
-    var messageText = message.text;
-
-    if (messageText === 'shit') {
-        messageText = "Get lost you moron!!!";
-    }
-
+    var messageText = message.text.toLowerCase().trim();
     var messageAttachments = message.attachments;
 
     if (messageText) {
@@ -92,8 +129,12 @@ function receivedMessage(event) {
                 sendGenericMessage(senderID);
                 break;
 
-            case 'cat fact':
-                sendCatFactMessage(senderID, messageText);
+            case 'cat fact' || 'yes':
+                sendCatFactMessage(senderID);
+                break;
+
+            case 'get started':
+                sendIntroMessage(senderID);
                 break;
 
             default:
@@ -101,6 +142,28 @@ function receivedMessage(event) {
         }
     } else if (messageAttachments) {
         sendTextMessage(senderID, "Message with attachment received");
+    }
+}
+
+function sendIntroMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            text: 'Would you like a badass cat fact?',
+            quick_replies: [
+                {
+                    content_type: 'text',
+                    title: 'Yes',
+                    payload: 'cat fact'
+                }, {
+                    content_type: 'text',
+                    title: 'No',
+                    payload: 'no cat fact'
+                }
+            ]
+        }
     }
 }
 
@@ -115,14 +178,14 @@ function sendTextMessage(recipientId, messageText) {
             id: recipientId
         },
         message: {
-            text: messageText
+            text: 'echo: ' + messageText
         }
     };
 
     callSendAPI(messageData);
 }
 
-function sendCatFactMessage(recipientId, messageText) {
+function sendCatFactMessage(recipientId) {
     request({
         uri: 'https://purrify.herokuapp.com/api/facts',
         method: 'GET'
