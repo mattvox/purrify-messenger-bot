@@ -83,6 +83,7 @@ function receivedPostback(event) {
                 console.log('error finding user name: ', err);
             } else {
                 var bodyObj = JSON.parse(body);
+                console.log('BODY OBJECT: ', bodyObj);
                 greeting = 'Oh herro' + bodyObj.first_name + '! ';
             }
 
