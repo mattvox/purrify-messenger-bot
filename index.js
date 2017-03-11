@@ -90,7 +90,7 @@ function receivedMessage(event) {
                 sendGenericMessage(senderID);
                 break;
 
-            case 'cat-fact':
+            case 'cat fact':
                 sendCatFactMessage(senderID, messageText);
                 break;
 
@@ -103,7 +103,7 @@ function receivedMessage(event) {
 }
 
 function sendGenericMessage(recipientId, messageText) {
-    // To be expanded in later sections
+
 }
 
 function sendTextMessage(recipientId, messageText) {
@@ -121,12 +121,12 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function sendCatFactMessage(recipientId, messageText) {
-    // console.log('test', recipientId, messageText);
-    // make API call
     request('https://purrify.herokuapp.com/api/facts',
     function (err, response, body) {
-      var body = JSON.parse(body);
-      console.log('body', body, typeof body);
+      if (typeof body === "string"){
+        var body = JSON.parse(body);
+      }
+
         var messageData = {
             recipient: {
                 id: recipientId
@@ -135,7 +135,6 @@ function sendCatFactMessage(recipientId, messageText) {
                 text: body[0].fact
             }
         };
-        console.log('BODY: ', body[0].fact);
         callSendAPI(messageData);
     })
 }
