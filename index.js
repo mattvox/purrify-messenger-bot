@@ -158,7 +158,7 @@ function receivedMessage(event) {
     if (messageText) {
 
       if (isQuickReply) {
-          sendTextMessage(senderID, 'This is a quick reply!');
+          console.log('This is a quick reply!');
       }
 
         // If we receive a text message, check to see if it matches a keyword
