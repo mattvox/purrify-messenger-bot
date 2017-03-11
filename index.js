@@ -46,6 +46,8 @@ app.post('/webhook', function (req, res) {
             entry.messaging.forEach(function (event) {
                 if (event.postback) {
                     receivedPostback(event);
+                } else if (event.message.quick_reply.payload) {
+                    receivedQuickReply(event);
                 } else if (event.message) {
                     receivedMessage(event);
                 } else {
@@ -75,7 +77,7 @@ function receivedPostback(event) {
             break;
 
         default:
-            sendTextMessage(senderID, 'I\'m sorry, I don\'t understand.');
+            sendTextMessage(senderID, 'I am sorry, I do not understand this postback.');
     }
 }
 
@@ -120,6 +122,22 @@ function handleGreeting(senderID) {
 
         callSendAPI(messageData);
     })
+}
+
+// ***************************** QUICK REPLIES *******************************
+
+function receivedQuickReply(event) {
+    var senderID = event.sender.id;
+    var payload = event.message.quick_reply.payload.toLowerCase();
+
+    switch (payload) {
+        case 'cat fact':
+            sendCatFactMessage(senderID);
+            break;
+
+        default:
+            sendTextMessage(senderID, 'I am sorry, I do not understand this quick reply.');
+    }
 }
 
 // ***************************** MESSAGES *******************************
