@@ -58,59 +58,72 @@ app.post('/webhook', function (req, res) {
     }
 });
 
-// ---------------------------------------------------------
+// ***************************** POSTBACKS *******************************
 
 function receivedPostback(event) {
     var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
     var payload = event.postback.payload.toLowerCase();
 
+    switch (payload) {
+        case 'greeting':
+            handleGreeting(senderID);
+            break;
 
-
-    if (payload === 'greeting') {
-
-      console.log('SENDER ID', event.sender.id);
-        request({
-            uri: 'https://graph.facebook.com/v2.6/' + senderID,
-            qs: {
-                access_token: process.env.PAGE_ACCESS_TOKEN,
-                fields: 'first_name'
-            },
-            method: 'GET'
-        }, function (err, response, body) {
-            var greeting = '';
-
-            if (err) {
-                console.log('error finding user name: ', err);
-            } else {
-                var bodyObj = JSON.parse(body);
-                console.log('BODY OBJECT: ', bodyObj);
-                greeting = 'Oh herro' + bodyObj.first_name + '! ';
-            }
-
-            var messageData = {
-                recipient: {
-                    id: senderID
-                },
-                message: {
-                    text: greeting + 'Welcome to the Purrrify bot. Would you like a cat fact right meow?',
-                    quick_replies: [
-                        {
-                            content_type: 'text',
-                            title: 'Yes',
-                            payload: 'cat fact'
-                        }, {
-                            content_type: 'text',
-                            title: 'No',
-                            payload: 'no cat fact'
-                        }
-                    ]
-                }
-            }
-
-            callSendAPI(messageData);
-        })
+        default:
+            sendTextMessage(senderID, 'I\'m sorry, I don\'t understand.');
     }
 }
+
+function handleGreeting(senderID) {
+    request({
+        uri: 'https://graph.facebook.com/v2.6/' + senderID,
+        qs: {
+            access_token: process.env.PAGE_ACCESS_TOKEN,
+            fields: 'first_name'
+        },
+        method: 'GET'
+    }, function (err, response, body) {
+        var greeting = '';
+
+        if (err) {
+            console.log('error finding user name: ', err);
+        } else {
+            var bodyObj = JSON.parse(body);
+            console.log('BODY OBJECT: ', bodyObj);
+            greeting = 'Oh herro ' + bodyObj.first_name + '! ';
+        }
+
+        var messageData = {
+            recipient: {
+                id: senderID
+            },
+            message: {
+                text: greeting + 'Welcome to the Purrrify bot. Would you like a cat fact right meow?',
+                quick_replies: [
+                    {
+                        content_type: 'text',
+                        title: 'Yes',
+                        payload: 'cat fact'
+                    }, {
+                        content_type: 'text',
+                        title: 'No',
+                        payload: 'no cat fact'
+                    }
+                ]
+            }
+        }
+
+        callSendAPI(messageData);
+    })
+}
+
+
+
+
+
+
+// ***************************** MESSAGES *******************************
 
 function receivedMessage(event) {
     var senderID = event.sender.id;
@@ -134,13 +147,13 @@ function receivedMessage(event) {
                 sendGenericMessage(senderID);
                 break;
 
-            case 'cat fact' || 'yes':
+            case 'cat fact':
                 sendCatFactMessage(senderID);
                 break;
 
-            case 'get started':
-                sendIntroMessage(senderID);
-                break;
+            // case 'get started':
+            //     sendIntroMessage(senderID);
+            //     break;
 
             default:
                 sendTextMessage(senderID, messageText);
@@ -149,28 +162,28 @@ function receivedMessage(event) {
         sendTextMessage(senderID, "Message with attachment received");
     }
 }
-
-function sendIntroMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            text: 'Would you like a badass cat fact?',
-            quick_replies: [
-                {
-                    content_type: 'text',
-                    title: 'Yes',
-                    payload: 'cat fact'
-                }, {
-                    content_type: 'text',
-                    title: 'No',
-                    payload: 'no cat fact'
-                }
-            ]
-        }
-    }
-}
+//
+// function sendIntroMessage(recipientId) {
+//     var messageData = {
+//         recipient: {
+//             id: recipientId
+//         },
+//         message: {
+//             text: 'Would you like a badass cat fact?',
+//             quick_replies: [
+//                 {
+//                     content_type: 'text',
+//                     title: 'Yes',
+//                     payload: 'cat fact'
+//                 }, {
+//                     content_type: 'text',
+//                     title: 'No',
+//                     payload: 'no cat fact'
+//                 }
+//             ]
+//         }
+//     }
+// }
 
 function sendGenericMessage(recipientId, messageText) {
     console.log('generic message');
@@ -215,6 +228,8 @@ function sendCatFactMessage(recipientId) {
     })
 }
 
+// ***************************** CALL SEND API *******************************
+
 function callSendAPI(messageData) {
     request({
         uri: 'https://graph.facebook.com/v2.6/me/messages',
@@ -233,7 +248,7 @@ function callSendAPI(messageData) {
             console.log("Successfully sent generic message with id %s to recipient %s", messageId, recipientId);
         } else {
             console.error("Unable to send message.");
-            // console.error(response);
+            console.error(response);
             console.error(error);
         }
     });
