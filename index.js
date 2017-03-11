@@ -70,6 +70,10 @@ function receivedPostback(event) {
             handleGreeting(senderID);
             break;
 
+        case 'cat fact':
+            sendCatFactMessage(senderID);
+            break;
+
         default:
             sendTextMessage(senderID, 'I\'m sorry, I don\'t understand.');
     }
@@ -118,11 +122,6 @@ function handleGreeting(senderID) {
     })
 }
 
-
-
-
-
-
 // ***************************** MESSAGES *******************************
 
 function receivedMessage(event) {
@@ -151,12 +150,12 @@ function receivedMessage(event) {
                 sendCatFactMessage(senderID);
                 break;
 
-            // case 'get started':
-            //     sendIntroMessage(senderID);
-            //     break;
+                // case 'get started':
+                //     sendIntroMessage(senderID);
+                //     break;
 
             default:
-                sendTextMessage(senderID, messageText);
+                sendTextMessage(senderID, 'Payload not handled yet');
         }
     } else if (messageAttachments) {
         sendTextMessage(senderID, "Message with attachment received");
