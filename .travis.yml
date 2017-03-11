@@ -1,0 +1,7 @@
+deploy:
+  provider: heroku
+  api_key:
+    secure: kda22lfBkBitFjP3wFd+rOhhqxx6rkluqhCIspUKn9+g1mi4miNUh3+TJcIPlnj7Avx2jvU8G/gy4+vbgZp2+KxhShq3HnjgO2LWLYhaq38+f+EcRsrrXT/MvCT8boUC0/EFlg/Ec1k7bRaNKSxY7xU5lXl7OOR9z1rVJuEByWeFEY3iaF8RsgMjTPMEoHh8FffY7yLsWqkmgl2KKtzAGLB/cHSrPQ2PEd/1lX3gS+wtsmXVRKh+aF7Fui2wFUvXVv9P5L5CXbW4aLOe7u2tEiUBQXmelyLLFrHFQO9FfXt8EIXibhLJvqbtPfyNRlwIbA3DR1C7jXkxEG3FnzCfouE0d3yHoRH2dU7jWqO7AsUMv+HzwvuCswKR5MwgUv2PtYH6Z3PZT5wF0R9uVgSNzXcTRE+wtj3E8WDRVNeKdj4kXH37WEa/zSSwayiHecclfbF/n48FWGzM5TTKF2d/7SETgE6Mb6LMdUIEfFVetzHlj1y1Iz7//j6IrqHEn1g/jKL1NAYfsZu8Pw314wZKUVJBDAcGlWiS0sNZ67K/G2vbyoYcceGnrD8HDTPz4src2mxdDRiEliyFS9dHw1wKBIa0A/3Rm+cvaIr0+UGLeokTakCeIoa4UVLDLdTetRXppr+LIz+VrezaSuB8uFvOVnCTlRIibCyoVr5TBzptXg0=
+  app: purrify-fbm
+  on:
+    repo: mattvox/purrify-messenger-bot
