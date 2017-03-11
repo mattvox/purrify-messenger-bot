@@ -123,15 +123,17 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 function sendCatFactMessage(recipientId, messageText) {
-    request('https://purrify.herokuapp.com/api/facts',
-    function (err, response, body) {
-      if (err) {
-          console.log('send cat fact error: ', err);
-      }
+    request({
+        uri: 'https://purrify.herokuapp.com/api/facts',
+        method: 'GET'
+    }, function (err, response, body) {
+        if (err) {
+            console.log('send cat fact error: ', err);
+        }
 
-      if (typeof body === "string"){
-        var body = JSON.parse(body);
-      }
+        if (typeof body === 'string') {
+            var body = JSON.parse(body);
+        }
 
         var messageData = {
             recipient: {
@@ -155,7 +157,7 @@ function callSendAPI(messageData) {
         json: messageData
 
     }, function (error, response, body) {
-      console.log('status code', response.statusCode);
+        console.log('status code', response.statusCode);
         if (!error && response.statusCode === 200) {
             var recipientId = body.recipient_id;
             var messageId = body.message_id;
