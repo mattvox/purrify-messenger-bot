@@ -46,8 +46,6 @@ app.post('/webhook', function (req, res) {
             entry.messaging.forEach(function (event) {
                 if (event.postback) {
                     receivedPostback(event);
-                } else if (event.message.quick_reply.payload) {
-                    receivedQuickReply(event);
                 } else if (event.message) {
                     receivedMessage(event);
                 } else {
@@ -164,7 +162,7 @@ function receivedMessage(event) {
                 sendGenericMessage(senderID);
                 break;
 
-            case 'cat fact':
+            case 'cat fact' || 'yes':
                 sendCatFactMessage(senderID);
                 break;
 
