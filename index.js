@@ -1,5 +1,7 @@
 'use strict'
 
+/* global process */
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
@@ -75,7 +77,7 @@ function receivedMessage(event) {
 
     var messageText = message.text;
 
-    if (messageText == 'shit') {
+    if (messageText === 'shit') {
         messageText = "Get lost you moron!!!";
     }
 
@@ -103,7 +105,7 @@ function receivedMessage(event) {
 }
 
 function sendGenericMessage(recipientId, messageText) {
-
+    console.log('generic message');
 }
 
 function sendTextMessage(recipientId, messageText) {
@@ -123,6 +125,10 @@ function sendTextMessage(recipientId, messageText) {
 function sendCatFactMessage(recipientId, messageText) {
     request('https://purrify.herokuapp.com/api/facts',
     function (err, response, body) {
+      if (err) {
+          console.log('send cat fact error: ', err);
+      }
+
       if (typeof body === "string"){
         var body = JSON.parse(body);
       }
@@ -150,7 +156,7 @@ function callSendAPI(messageData) {
 
     }, function (error, response, body) {
       console.log('status code', response.statusCode);
-        if (!error && response.statusCode == 200) {
+        if (!error && response.statusCode === 200) {
             var recipientId = body.recipient_id;
             var messageId = body.message_id;
 
