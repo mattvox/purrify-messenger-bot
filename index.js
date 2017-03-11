@@ -153,7 +153,13 @@ function receivedMessage(event) {
     var messageText = message.text.toLowerCase().trim();
     var messageAttachments = message.attachments;
 
+    var isQuickReply = message.quick_reply.payload;
+
     if (messageText) {
+
+      if (isQuickReply) {
+          sendTextMessage(senderID, 'This is a quick reply!');
+      }
 
         // If we receive a text message, check to see if it matches a keyword
         // and send back the example. Otherwise, just echo the text we received.
@@ -162,13 +168,13 @@ function receivedMessage(event) {
                 sendGenericMessage(senderID);
                 break;
 
-            case ('cat fact' || 'yes'):
+            case 'cat fact':
                 sendCatFactMessage(senderID);
                 break;
 
-                // case 'get started':
-                //     sendIntroMessage(senderID);
-                //     break;
+            // case 'yes':
+            //     sendCatFactMessage(senderID);
+            //     break;
 
             default:
                 sendTextMessage(senderID, 'Message handled yet, this is default case.');
