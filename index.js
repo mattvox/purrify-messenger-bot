@@ -153,8 +153,6 @@ function receivedMessage(event) {
     var messageText = message.text.toLowerCase().trim();
     var messageAttachments = message.attachments;
 
-    var isQuickReply = message.quick_reply.payload;
-
     if (messageText) {
 
         // If we receive a text message, check to see if it matches a keyword
