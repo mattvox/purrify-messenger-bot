@@ -62,9 +62,13 @@ app.post('/webhook', function (req, res) {
 
 function receivedPostback(event) {
     var senderID = event.sender.id;
-    var payload = event.postback.payload;
+    var payload = event.postback.payload.toLowerCase();
 
-    if (payload === 'Greeting') {
+
+
+    if (payload === 'greeting') {
+
+      console.log('SENDER ID', event.sender.id);
         request({
             uri: 'https://graph.facebook.com/v2.6/' + senderID,
             qs: {
