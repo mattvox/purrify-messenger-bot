@@ -106,11 +106,11 @@ function handleGreeting(senderID) {
                 text: greeting + 'Welcome to the Purrrify bot. Would you like a cat fact right meow?',
                 quick_replies: [
                     {
-                        content_type: 'postback',
+                        content_type: 'text',
                         title: 'Yes',
                         payload: 'cat fact'
                     }, {
-                        content_type: 'postback',
+                        content_type: 'text',
                         title: 'No',
                         payload: 'no cat fact'
                     }
@@ -122,21 +122,6 @@ function handleGreeting(senderID) {
     })
 }
 
-// ***************************** QUICK REPLIES *******************************
-
-function receivedQuickReply(event) {
-    var senderID = event.sender.id;
-    var payload = event.message.quick_reply.payload.toLowerCase();
-
-    switch (payload) {
-        case 'cat fact':
-            sendCatFactMessage(senderID);
-            break;
-
-        default:
-            sendTextMessage(senderID, 'I am sorry, I do not understand this quick reply.');
-    }
-}
 
 // ***************************** MESSAGES *******************************
 
@@ -166,9 +151,9 @@ function receivedMessage(event) {
                 sendCatFactMessage(senderID);
                 break;
 
-            // case 'yes':
-            //     sendCatFactMessage(senderID);
-            //     break;
+            case 'yes':
+                sendCatFactMessage(senderID);
+                break;
 
             default:
                 sendTextMessage(senderID, 'Message handled yet, this is default case.');
