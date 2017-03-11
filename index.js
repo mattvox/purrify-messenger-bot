@@ -162,7 +162,7 @@ function receivedMessage(event) {
                 sendGenericMessage(senderID);
                 break;
 
-            case 'cat fact' || 'yes':
+            case ('cat fact' || 'yes'):
                 sendCatFactMessage(senderID);
                 break;
 
@@ -171,7 +171,7 @@ function receivedMessage(event) {
                 //     break;
 
             default:
-                sendTextMessage(senderID, 'Payload not handled yet');
+                sendTextMessage(senderID, 'Message handled yet, this is default case.');
         }
     } else if (messageAttachments) {
         sendTextMessage(senderID, "Message with attachment received");
