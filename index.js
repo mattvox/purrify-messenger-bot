@@ -138,8 +138,9 @@ function receivedMessage(event) {
     console.log(JSON.stringify(message));
 
     var messageId = message.mid;
-    var messageText = message.text.toLowerCase().trim();
+    var messageText = message.text;
     var messageAttachments = message.attachments;
+
 
     if (message.quick_reply){
         quickReply = message.quick_reply.payload;
@@ -152,7 +153,7 @@ function receivedMessage(event) {
 
 
     if (messageText) {
-        switch (messageText) {
+        switch (messageText.toLowerCase().trim()) {
             case 'generic':
                 sendGenericMessage(senderID);
                 break;
