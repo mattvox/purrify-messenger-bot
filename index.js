@@ -174,7 +174,7 @@ function receivedMessage(event) {
                 sendTextMessage(senderID, 'I am sorry, I do not understand this message.');
         }
     } else if (messageAttachments) {
-        console.log('************ IMAGE URL ***********************', messageAttachments.payload.url);
+        console.log('************ IMAGE URL ***********************', messageAttachments[0].payload);
         sendTextMessage(senderID, "Message with attachment received");
     }
 }
