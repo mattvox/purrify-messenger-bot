@@ -146,8 +146,10 @@ function receivedMessage(event) {
         console.log(quickR);
     }
 
-    if (quickR){
+    if (quickR) {
+        sendTextMessage(senderID, "Message with payload received.");
 
+        return;
     }
 
 
