@@ -186,7 +186,7 @@ function postCatToDB(url, recipientId) {
   request({
       uri: 'https://purrify.herokuapp.com/api/cats',
       method: 'POST',
-      body: {
+      json: {
         uri: url
       }
   }, function (error, response, body) {
