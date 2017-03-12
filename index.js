@@ -73,15 +73,15 @@ function receivedPostback(event) {
             break;
 
         case 'cat':
-            sendCatMessage(senderID);
+            messages.sendCatMessage(senderID);
             break;
 
         case 'cat fact':
-            sendCatFactMessage(senderID);
+            messages.sendCatFactMessage(senderID);
             break;
 
         case 'share a cat':
-            sendShareMessage(senderID);
+            messages.sendShareMessage(senderID);
             break;
 
         default:
@@ -128,7 +128,7 @@ function handleGreeting(senderID) {
             }
         }
 
-        callSendAPI(messageData);
+        messages.callSend(messageData);
     })
 }
 
@@ -164,7 +164,7 @@ function receivedMessage(event) {
     if (messageText) {
         switch (messageText.toLowerCase().trim()) {
             case 'cat fact':
-                sendCatFactMessage(senderID);
+                messages.sendCatFactMessage(senderID);
                 break;
 
             // case 'yes':
@@ -177,7 +177,7 @@ function receivedMessage(event) {
     } else if (messageAttachments) {
         console.log('************ IMAGE URL ***********************', messageAttachments[0].payload.url);
 
-        if (messageAttachments[0].type = 'image') {
+        if (messageAttachments[0].type === 'image') {
             postCatToDB(messageAttachments[0].payload.url, senderID);
         }
         // sendTextMessage(senderID, "Message with attachment received");
@@ -214,7 +214,7 @@ function postCatToDB(url, recipientId) {
             text: text
         }
       }
-      callSendAPI(messageData);
+      messages.callSend(messageData);
   });
 }
 
@@ -232,98 +232,98 @@ function postCatToDB(url, recipientId) {
 //     callSendAPI(messageData);
 // }
 
-function sendCatMessage(recipientId) {
-    request({
-        uri: 'https://purrify.herokuapp.com/api/cats',
-        method: 'GET'
-    }, function (err, response, body) {
-        if (err) {
-            console.log('send cat fact error: ', err);
-        }
-
-        if (typeof body === 'string') {
-            var body = JSON.parse(body);
-        }
-
-        console.log('*************BODY******************: ', body);
-
-        var messageData = {
-            recipient: {
-                id: recipientId
-            },
-            message: {
-                attachment: {
-                    type: 'image',
-                    payload: {
-                        url: body[0].uri
-                    }
-                }
-            }
-        };
-        callSendAPI(messageData);
-    })
-}
-
-function sendCatFactMessage(recipientId) {
-    request({
-        uri: 'https://purrify.herokuapp.com/api/facts',
-        method: 'GET'
-    }, function (err, response, body) {
-        if (err) {
-            console.log('send cat fact error: ', err);
-        }
-
-        if (typeof body === 'string') {
-            var body = JSON.parse(body);
-        }
-
-        var messageData = {
-            recipient: {
-                id: recipientId
-            },
-            message: {
-                text: body[0].fact
-            }
-        };
-        callSendAPI(messageData);
-    })
-}
-
-function sendShareMessage(recipientId, messageText) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            text: 'It\'s very easy to share a cat with us. Just snap a photo of a nearby cat or upload one from your phone or computer. We\'ll love you for it!'
-        }
-    };
-
-    callSendAPI(messageData);
-}
+// function sendCatMessage(recipientId) {
+//     request({
+//         uri: 'https://purrify.herokuapp.com/api/cats',
+//         method: 'GET'
+//     }, function (err, response, body) {
+//         if (err) {
+//             console.log('send cat fact error: ', err);
+//         }
+//
+//         if (typeof body === 'string') {
+//             var body = JSON.parse(body);
+//         }
+//
+//         console.log('*************BODY******************: ', body);
+//
+//         var messageData = {
+//             recipient: {
+//                 id: recipientId
+//             },
+//             message: {
+//                 attachment: {
+//                     type: 'image',
+//                     payload: {
+//                         url: body[0].uri
+//                     }
+//                 }
+//             }
+//         };
+//         callSendAPI(messageData);
+//     })
+// }
+//
+// function sendCatFactMessage(recipientId) {
+//     request({
+//         uri: 'https://purrify.herokuapp.com/api/facts',
+//         method: 'GET'
+//     }, function (err, response, body) {
+//         if (err) {
+//             console.log('send cat fact error: ', err);
+//         }
+//
+//         if (typeof body === 'string') {
+//             var body = JSON.parse(body);
+//         }
+//
+//         var messageData = {
+//             recipient: {
+//                 id: recipientId
+//             },
+//             message: {
+//                 text: body[0].fact
+//             }
+//         };
+//         callSendAPI(messageData);
+//     })
+// }
+//
+// function sendShareMessage(recipientId, messageText) {
+//     var messageData = {
+//         recipient: {
+//             id: recipientId
+//         },
+//         message: {
+//             text: 'It\'s very easy to share a cat with us. Just snap a photo of a nearby cat or upload one from your phone or computer. We\'ll love you for it!'
+//         }
+//     };
+//
+//     callSendAPI(messageData);
+// }
 
 // ***************************** CALL SEND API *******************************
 
-function callSendAPI(messageData) {
-    request({
-        uri: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: PAGE_ACCESS_TOKEN
-        },
-        method: 'POST',
-        json: messageData
-
-    }, function (error, response, body) {
-        console.log('status code', response.statusCode);
-        if (!error && response.statusCode === 200) {
-            var recipientId = body.recipient_id;
-            var messageId = body.message_id;
-
-            console.log("Successfully sent generic message with id %s to recipient %s", messageId, recipientId);
-        } else {
-            console.error("Unable to send message.");
-            // console.error(response);
-            // console.error(error);
-        }
-    });
-}
+// function callSendAPI(messageData) {
+//     request({
+//         uri: 'https://graph.facebook.com/v2.6/me/messages',
+//         qs: {
+//             access_token: PAGE_ACCESS_TOKEN
+//         },
+//         method: 'POST',
+//         json: messageData
+//
+//     }, function (error, response, body) {
+//         console.log('status code', response.statusCode);
+//         if (!error && response.statusCode === 200) {
+//             var recipientId = body.recipient_id;
+//             var messageId = body.message_id;
+//
+//             console.log("Successfully sent generic message with id %s to recipient %s", messageId, recipientId);
+//         } else {
+//             console.error("Unable to send message.", error);
+//             // console.error(response);
+//             // console.error(error);
+//         }
+//     });
+// }
