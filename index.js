@@ -175,8 +175,44 @@ function receivedMessage(event) {
         }
     } else if (messageAttachments) {
         console.log('************ IMAGE URL ***********************', messageAttachments[0].payload.url);
+
+        if (messageAttachments[0].type = 'image') {
+            postCatToDB(messageAttachments[0].payload.url);
+        }
         sendTextMessage(senderID, "Message with attachment received");
     }
+}
+
+function postCatToDB(url, recipientId) {
+  request({
+      uri: 'https://purrify.herokuapp.com/api/cats',
+      method: 'POST',
+      body: url
+  }, function (error, response, body) {
+      var text = '';
+
+      if (!error && response.statusCode === 201) {
+          console.log('Successfully added image.');
+
+          text = 'Thanks for the image!';
+
+      } else {
+          console.error("Unable to add image. ", error);
+
+          text = 'Image not added.';
+
+      }
+
+      var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            text: text
+        }
+      }
+      callSendAPI(messageData);
+  });
 }
 
 function sendTextMessage(recipientId, messageText) {
