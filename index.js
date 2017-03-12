@@ -159,7 +159,6 @@ function receivedMessage(event) {
         messageText = quickReply;
     }
 
-
     if (messageText) {
         switch (messageText.toLowerCase().trim()) {
             case 'cat fact':
@@ -187,7 +186,9 @@ function postCatToDB(url, recipientId) {
   request({
       uri: 'https://purrify.herokuapp.com/api/cats',
       method: 'POST',
-      body: url
+      body: {
+        uri: url
+      }
   }, function (error, response, body) {
       var text = '';
 
