@@ -174,7 +174,7 @@ function receivedMessage(event) {
                 sendTextMessage(senderID, 'I am sorry, I do not understand this message.');
         }
     } else if (messageAttachments) {
-        console.log('************ IMAGE URL ***********************', messageAttachments[0].payload);
+        console.log('************ IMAGE URL ***********************', messageAttachments[0].payload.url);
         sendTextMessage(senderID, "Message with attachment received");
     }
 }
@@ -251,7 +251,6 @@ function sendCatFactMessage(recipientId) {
 }
 
 function sendShareMessage(recipientId, messageText) {
-    console.log('test', recipientId, messageText);
     var messageData = {
         recipient: {
             id: recipientId
@@ -284,8 +283,8 @@ function callSendAPI(messageData) {
             console.log("Successfully sent generic message with id %s to recipient %s", messageId, recipientId);
         } else {
             console.error("Unable to send message.");
-            console.error(response);
-            console.error(error);
+            // console.error(response);
+            // console.error(error);
         }
     });
 }
