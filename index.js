@@ -195,7 +195,6 @@ function sendCatFactMessage(recipientId) {
             recipient: {
                 id: recipientId
             },
-            sender_action: 'typing_on',
             message: {
                 text: body[0].fact
             }
