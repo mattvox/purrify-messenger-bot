@@ -29,11 +29,41 @@ request({
     qs: {
         access_token: process.env.PAGE_ACCESS_TOKEN
     },
-    method: 'POST',
-    json: persistentMenu
+    method: 'DELETE',
+    json: {
+        setting_type: "call_to_actions",
+        thread_state: "existing_thread"
+    }
 }, function (err, response) {
     if (err) {
         console.log(err);
+    } else {
+      request({
+          uri: 'https://graph.facebook.com/v2.6/thread_settings',
+          qs: {
+              access_token: process.env.PAGE_ACCESS_TOKEN
+          },
+          method: 'POST',
+          json: persistentMenu
+      }, function (err, response) {
+          if (err) {
+              console.log(err);
+          }
+          console.log('finished');
+      });
     }
-    console.log('finished');
-});
+})
+
+// request({
+//     uri: 'https://graph.facebook.com/v2.6/thread_settings',
+//     qs: {
+//         access_token: process.env.PAGE_ACCESS_TOKEN
+//     },
+//     method: 'POST',
+//     json: persistentMenu
+// }, function (err, response) {
+//     if (err) {
+//         console.log(err);
+//     }
+//     console.log('finished');
+// });
