@@ -2,12 +2,14 @@
 
 /* global process */
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const request = require('request');
-const app = express();
+var express = require('express');
+var bodyParser = require('body-parser');
+var request = require('request');
+var app = express();
 
-const PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
+var messages = require('./messages');
+
+var PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -83,7 +85,7 @@ function receivedPostback(event) {
             break;
 
         default:
-            sendTextMessage(senderID, 'I am sorry, I do not understand this postback.');
+            messages.sendTextMessage(senderID, 'I am sorry, I do not understand this postback.');
     }
 }
 
@@ -170,7 +172,7 @@ function receivedMessage(event) {
             //     break;
 
             default:
-                sendTextMessage(senderID, 'I am sorry, I do not understand this message.');
+                messages.sendTextMessage(senderID, 'I am sorry, I do not understand this message.');
         }
     } else if (messageAttachments) {
         console.log('************ IMAGE URL ***********************', messageAttachments[0].payload.url);
@@ -216,19 +218,19 @@ function postCatToDB(url, recipientId) {
   });
 }
 
-function sendTextMessage(recipientId, messageText) {
-    console.log('test', recipientId, messageText);
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            text: 'echo: ' + messageText
-        }
-    };
-
-    callSendAPI(messageData);
-}
+// function sendTextMessage(recipientId, messageText) {
+//     console.log('test', recipientId, messageText);
+//     var messageData = {
+//         recipient: {
+//             id: recipientId
+//         },
+//         message: {
+//             text: 'echo: ' + messageText
+//         }
+//     };
+//
+//     callSendAPI(messageData);
+// }
 
 function sendCatMessage(recipientId) {
     request({
