@@ -201,6 +201,8 @@ function sendCatMessage(recipientId) {
             var body = JSON.parse(body);
         }
 
+        console.log('*************BODY******************: ', body);
+
         var messageData = {
             recipient: {
                 id: recipientId
