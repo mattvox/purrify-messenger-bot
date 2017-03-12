@@ -128,7 +128,7 @@ function handleGreeting(senderID) {
             }
         }
 
-        messages.callSend(messageData);
+        messages.sendGreetingMessage(messageData);
     })
 }
 
@@ -166,10 +166,6 @@ function receivedMessage(event) {
             case 'cat fact':
                 messages.sendCatFactMessage(senderID);
                 break;
-
-            // case 'yes':
-            //     sendCatFactMessage(senderID);
-            //     break;
 
             default:
                 messages.sendTextMessage(senderID, 'I am sorry, I do not understand this message.');
@@ -214,7 +210,7 @@ function postCatToDB(url, recipientId) {
             text: text
         }
       }
-      messages.callSend(messageData);
+      messages.sendPostCatMessage(messageData);
   });
 }
 

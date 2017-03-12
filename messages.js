@@ -89,11 +89,19 @@ module.exports = {
       };
 
       callSendAPI(messageData);
+  },
+
+  sendPostCatMessage: function (messageData) {
+      callSendAPI(messageData);
+  },
+
+  sendGreetingMessage: function (messageData) {
+      callSendAPI(messageData);
   }
 
 }
 
-var callSendAPI = function (messageData) {
+function callSendAPI (messageData) {
     request({
         uri: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
@@ -115,5 +123,3 @@ var callSendAPI = function (messageData) {
         }
     });
 }
-
-exports.callSend = callSendAPI;
