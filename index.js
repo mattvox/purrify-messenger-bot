@@ -139,9 +139,6 @@ function receivedMessage(event) {
     var messageAttachments = message.attachments;
 
     if (messageText) {
-
-        // If we receive a text message, check to see if it matches a keyword
-        // and send back the example. Otherwise, just echo the text we received.
         switch (messageText) {
             case 'generic':
                 sendGenericMessage(senderID);
@@ -156,34 +153,12 @@ function receivedMessage(event) {
                 break;
 
             default:
-                sendTextMessage(senderID, 'Message handled yet, this is default case.');
+                sendTextMessage(senderID, 'Message not handled yet, this is default case.');
         }
     } else if (messageAttachments) {
         sendTextMessage(senderID, "Message with attachment received");
     }
 }
-//
-// function sendIntroMessage(recipientId) {
-//     var messageData = {
-//         recipient: {
-//             id: recipientId
-//         },
-//         message: {
-//             text: 'Would you like a badass cat fact?',
-//             quick_replies: [
-//                 {
-//                     content_type: 'text',
-//                     title: 'Yes',
-//                     payload: 'cat fact'
-//                 }, {
-//                     content_type: 'text',
-//                     title: 'No',
-//                     payload: 'no cat fact'
-//                 }
-//             ]
-//         }
-//     }
-// }
 
 function sendGenericMessage(recipientId, messageText) {
     console.log('generic message');
@@ -220,6 +195,7 @@ function sendCatFactMessage(recipientId) {
             recipient: {
                 id: recipientId
             },
+            sender_action: 'typing_on',
             message: {
                 text: body[0].fact
             }
