@@ -70,6 +70,10 @@ function receivedPostback(event) {
             handleGreeting(senderID);
             break;
 
+        case 'cat':
+            sendCatMessage(senderID);
+            break;
+
         case 'cat fact':
             sendCatFactMessage(senderID);
             break;
@@ -154,10 +158,6 @@ function receivedMessage(event) {
 
     if (messageText) {
         switch (messageText.toLowerCase().trim()) {
-            case 'generic':
-                sendGenericMessage(senderID);
-                break;
-
             case 'cat fact':
                 sendCatFactMessage(senderID);
                 break;
@@ -174,10 +174,6 @@ function receivedMessage(event) {
     }
 }
 
-function sendGenericMessage(recipientId, messageText) {
-    console.log('generic message');
-}
-
 function sendTextMessage(recipientId, messageText) {
     console.log('test', recipientId, messageText);
     var messageData = {
@@ -190,6 +186,36 @@ function sendTextMessage(recipientId, messageText) {
     };
 
     callSendAPI(messageData);
+}
+
+function sendCatMessage(recipientId) {
+    request({
+        uri: 'https://purrify.herokuapp.com/api/cats',
+        method: 'GET'
+    }, function (err, response, body) {
+        if (err) {
+            console.log('send cat fact error: ', err);
+        }
+
+        if (typeof body === 'string') {
+            var body = JSON.parse(body);
+        }
+
+        var messageData = {
+            recipient: {
+                id: recipientId
+            },
+            message: {
+                attachment: {
+                    type: 'image',
+                    payload: {
+                        url: body[0].uri
+                    }
+                }
+            }
+        };
+        callSendAPI(messageData);
+    })
 }
 
 function sendCatFactMessage(recipientId) {
