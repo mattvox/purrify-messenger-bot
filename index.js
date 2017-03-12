@@ -7,8 +7,6 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 
-const messages = require('./messages');
-
 const PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 
 app.set('port', (process.env.PORT || 5000));
@@ -81,7 +79,7 @@ function receivedPostback(event) {
             break;
 
         case 'share a cat':
-            messages.sendShareMessage(senderID);
+            sendShareMessage(senderID);
             break;
 
         default:
@@ -251,19 +249,19 @@ function sendCatFactMessage(recipientId) {
     })
 }
 
-// function sendShareMessage(recipientId, messageText) {
-//     console.log('test', recipientId, messageText);
-//     var messageData = {
-//         recipient: {
-//             id: recipientId
-//         },
-//         message: {
-//             text: 'It\'s very easy to share a cat with us. Just snap a photo of a nearby cat or upload one from your phone or computer. We\'ll love you for it!'
-//         }
-//     };
-//
-//     callSendAPI(messageData);
-// }
+function sendShareMessage(recipientId, messageText) {
+    console.log('test', recipientId, messageText);
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            text: 'It\'s very easy to share a cat with us. Just snap a photo of a nearby cat or upload one from your phone or computer. We\'ll love you for it!'
+        }
+    };
+
+    callSendAPI(messageData);
+}
 
 // ***************************** CALL SEND API *******************************
 
