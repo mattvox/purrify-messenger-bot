@@ -177,9 +177,9 @@ function receivedMessage(event) {
         console.log('************ IMAGE URL ***********************', messageAttachments[0].payload.url);
 
         if (messageAttachments[0].type = 'image') {
-            postCatToDB(messageAttachments[0].payload.url);
+            postCatToDB(messageAttachments[0].payload.url, senderID);
         }
-        sendTextMessage(senderID, "Message with attachment received");
+        // sendTextMessage(senderID, "Message with attachment received");
     }
 }
 
