@@ -174,6 +174,7 @@ function receivedMessage(event) {
                 sendTextMessage(senderID, 'I am sorry, I do not understand this message.');
         }
     } else if (messageAttachments) {
+        console.log(messageAttachments);
         sendTextMessage(senderID, "Message with attachment received");
     }
 }
