@@ -126,6 +126,7 @@ function handleGreeting(senderID) {
 // ***************************** MESSAGES *******************************
 
 function receivedMessage(event) {
+    var quickR;
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfMessage = event.timestamp;
@@ -139,6 +140,16 @@ function receivedMessage(event) {
     var messageId = message.mid;
     var messageText = message.text.toLowerCase().trim();
     var messageAttachments = message.attachments;
+
+    if (message.quick_reply){
+        quickR = message.quick_reply.payload;
+        console.log(quickR);
+    }
+
+    if (quickR){
+
+    }
+
 
     if (messageText) {
         switch (messageText) {
@@ -155,7 +166,7 @@ function receivedMessage(event) {
                 break;
 
             default:
-                sendTextMessage(senderID, 'Message not handled yet, this is default case.');
+                sendTextMessage(senderID, 'I am sorry, I do not understand this message.');
         }
     } else if (messageAttachments) {
         sendTextMessage(senderID, "Message with attachment received");
