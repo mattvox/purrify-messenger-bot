@@ -126,7 +126,7 @@ function handleGreeting(senderID) {
 // ***************************** MESSAGES *******************************
 
 function receivedMessage(event) {
-    var quickR;
+    var quickReply;
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfMessage = event.timestamp;
@@ -142,14 +142,12 @@ function receivedMessage(event) {
     var messageAttachments = message.attachments;
 
     if (message.quick_reply){
-        quickR = message.quick_reply.payload;
-        console.log(quickR);
+        quickReply = message.quick_reply.payload;
+        console.log(quickReply);
     }
 
-    if (quickR) {
-        sendTextMessage(senderID, "Message with payload received.");
-
-        return;
+    if (quickReply) {
+        messageText = quickReply;
     }
 
 
@@ -163,9 +161,9 @@ function receivedMessage(event) {
                 sendCatFactMessage(senderID);
                 break;
 
-            case 'yes':
-                sendCatFactMessage(senderID);
-                break;
+            // case 'yes':
+            //     sendCatFactMessage(senderID);
+            //     break;
 
             default:
                 sendTextMessage(senderID, 'I am sorry, I do not understand this message.');
