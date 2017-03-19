@@ -11,7 +11,6 @@ module.exports = {
 
     // a function for sending messages to a recipient. `recipientId` is a string.
 
-      console.log('test', recipientId, messageText);
       var messageData = {
           recipient: {
               id: recipientId
@@ -38,8 +37,6 @@ module.exports = {
           if (typeof body === 'string') {
               jsonBody = JSON.parse(body);
           }
-
-          console.log('*************BODY******************: ', body);
 
           var messageData = {
               recipient: {
@@ -92,6 +89,19 @@ module.exports = {
           },
           message: {
               text: 'It\'s very easy to share a cat with us. Just snap a photo of a nearby cat or upload one from your phone or computer. We\'ll love you for it!'
+          }
+      };
+
+      callSendAPI(messageData);
+  },
+
+  sendHelpMessage: function (recipientId) {
+      var messageData = {
+          recipient: {
+              id: recipientId
+          },
+          message: {
+              text: 'Want a barrage of cute cat pics or facts about cats? Then you came to the right place. Simply text \'cat\' to get a cat pic or \'fact\' to get a cat fact. Since I\'m a cat, I\'ll likely not respond to much else.'
           }
       };
 

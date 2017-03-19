@@ -73,9 +73,12 @@ function receivedPostback(event) {
             break;
 
         case 'cat':
+        case 'cat pic':
+        case 'cat photo':
             messages.sendCatMessage(senderID);
             break;
 
+        case 'fact':
         case 'cat fact':
             messages.sendCatFactMessage(senderID);
             break;
@@ -84,8 +87,14 @@ function receivedPostback(event) {
             messages.sendShareMessage(senderID);
             break;
 
+        case 'help':
+        case 'need help':
+        case 'i need help':
+            messages.sendHelpMessage(senderID);
+            break;
+
         default:
-            messages.sendTextMessage(senderID, 'I am sorry, I do not understand this postback.');
+            messages.sendTextMessage(senderID, 'I am sorry, I do not understand this postback. Purrrr.....');
     }
 }
 
