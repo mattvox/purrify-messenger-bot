@@ -8,13 +8,16 @@ var PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 
 module.exports = {
   sendTextMessage: function (recipientId, messageText) {
+
+    // a function for sending messages to a recipient. `recipientId` is a string.
+
       console.log('test', recipientId, messageText);
       var messageData = {
           recipient: {
               id: recipientId
           },
           message: {
-              text: 'echo: ' + messageText
+              text: messageText
           }
       };
 
@@ -30,8 +33,10 @@ module.exports = {
               console.log('send cat fact error: ', err);
           }
 
+          var jsonBody = body;
+
           if (typeof body === 'string') {
-              var body = JSON.parse(body);
+              jsonBody = JSON.parse(body);
           }
 
           console.log('*************BODY******************: ', body);
@@ -44,7 +49,7 @@ module.exports = {
                   attachment: {
                       type: 'image',
                       payload: {
-                          url: body[0].uri
+                          url: jsonBody[0].uri
                       }
                   }
               }
@@ -62,8 +67,10 @@ module.exports = {
               console.log('send cat fact error: ', err);
           }
 
+          var jsonBody = body;
+
           if (typeof body === 'string') {
-              var body = JSON.parse(body);
+              jsonBody = JSON.parse(body);
           }
 
           var messageData = {
@@ -71,7 +78,7 @@ module.exports = {
                   id: recipientId
               },
               message: {
-                  text: body[0].fact
+                  text: jsonBody[0].fact
               }
           };
           callSendAPI(messageData);
